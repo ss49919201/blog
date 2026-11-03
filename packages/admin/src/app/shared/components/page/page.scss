@@ -1,0 +1,46 @@
+@use "../../styles/variables" as *;
+
+.page-wrapper {
+  min-height: 100%;
+}
+
+.argo-page__header {
+  padding: 0.75rem 1.25rem;
+  background: $color-surface;
+  border-bottom: 1px solid $color-border;
+}
+
+.argo-page__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+}
+
+.argo-page__title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.argo-page__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.argo-page__content {
+  padding: 1.25rem;
+}
+
+.data-loader__loading,
+.data-loader__error {
+  margin: 0;
+  color: $color-muted;
+}
+
+.data-loader__error {
+  color: #b91c1c;
+}
