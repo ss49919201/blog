@@ -1,0 +1,62 @@
+@use "../../styles/variables" as *;
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: $sidebar-width;
+  min-height: 100vh;
+  color: $color-sidebar-text;
+  background: $color-sidebar-bg;
+  transition: width 0.15s ease;
+}
+
+.sidebar--collapsed {
+  width: $sidebar-width-collapsed;
+}
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.sidebar__collapse {
+  padding: 0.25rem 0.5rem;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.25rem;
+}
+
+.sidebar__nav {
+  margin: 0;
+  padding: 0.5rem 0;
+  list-style: none;
+}
+
+.sidebar__link {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: inherit;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+}
+
+.sidebar__link--active {
+  background: rgba(255, 255, 255, 0.06);
+  border-left-color: $color-accent;
+}
+
+.sidebar__link:hover {
+  background: rgba(255, 255, 255, 0.04);
+}

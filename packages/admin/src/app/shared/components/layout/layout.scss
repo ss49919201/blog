@@ -1,0 +1,20 @@
+@use "../../styles/variables" as *;
+
+.cd-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.cd-layout__content {
+  flex: 1;
+  min-width: 0;
+  background: $color-page;
+}
+
+.cd-layout__content--expanded {
+  /* content sits beside expanded sidebar */
+}
+
+.cd-layout__content--collapsed {
+  /* same flex child; sidebar width drives layout */
+}
