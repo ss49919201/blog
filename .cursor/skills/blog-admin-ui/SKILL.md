@@ -2,7 +2,7 @@
 name: blog-admin-ui
 description: >-
   packages/admin のブログ記事管理 UI を、HTML/CSS を学びながら React (JSX) +
-  TypeScript で実装する。シンプルなセマンティック HTML、プレーン CSS、最小限の
+  TypeScript で実装する。シンプルなセマンティック HTML、CSS Modules、最小限の
   コンポーネント分割を守る。packages/admin、管理画面、記事一覧、admin UI の
   追加・変更、HTML/CSS 学習付きの実装依頼で使用する。
 ---
@@ -28,7 +28,7 @@ description: >-
 | 場所     | `packages/admin`                                                                                      |
 | UI       | React 19 + JSX + TypeScript                                                                           |
 | ビルド   | Vite（`@vitejs/plugin-react`）                                                                        |
-| スタイル | **プレーン `.css`**（`src/*.css` を import）。CSS Modules / Tailwind / styled-components は導入しない |
+| スタイル | **CSS Modules**（`*.module.css`）。Tailwind / styled-components は導入しない |
 
 ## HTML / JSX
 
@@ -39,9 +39,10 @@ description: >-
 
 ## CSS
 
-- 色・余白は `:root` の CSS 変数でまとめる（既存 `src/list.css` に合わせる）。
+- ページ（またはコンポーネント）のクラスは `*.module.css`。JSX では `import styles from "./PostListPage.module.css"` とし、`className={styles.pageHeader}` のように参照する。
+- `:root` の色変数、リセット、`body` は `src/global.css`（通常の CSS）。要素セレクタは Modules でもグローバルのままなので、土台とコンポーネントを分ける。
 - レイアウトは Flexbox / Grid。float や過剰な absolute 配置は避ける。
-- 修飾は BEM 風のクラス名（例: `badge`, `badge--published`）。コンポーネントごとに CSS ファイルを増やしすぎない（ページ単位 or 1 global で開始）。
+- 修飾クラスはファイル内で短くする（例: `.badge` と `.published`）。BEM のブロック接頭辞はファイルのスコープが担う。CSS ファイルはページ単位で増やしすぎない。
 
 ## React / TypeScript
 
@@ -64,5 +65,5 @@ description: >-
 
 - 一覧: [PostListPage.tsx](../../../packages/admin/src/pages/PostListPage.tsx)
 - 型: [post.ts](../../../packages/admin/src/types/post.ts)
-- スタイル: [list.css](../../../packages/admin/src/list.css)
+- スタイル: [global.css](../../../packages/admin/src/global.css)、[PostListPage.module.css](../../../packages/admin/src/pages/PostListPage.module.css)
 - エントリ: [main.tsx](../../../packages/admin/src/main.tsx)

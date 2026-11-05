@@ -1,0 +1,29 @@
+/* 色だけ変数にまとめると、あとから一括で変えやすい。
+   :root と body はページ全体の土台なので、CSS Modules には入れない。 */
+:root {
+  --color-text: #1a1a1a;
+  --color-muted: #5c5c5c;
+  --color-border: #d8d8d8;
+  --color-surface: #ffffff;
+  --color-page: #f4f4f5;
+  --color-accent: #2563eb;
+  --color-published: #166534;
+  --color-published-bg: #dcfce7;
+  --color-draft: #854d0e;
+  --color-draft-bg: #fef9c3;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  color: var(--color-text);
+  background: var(--color-page);
+}

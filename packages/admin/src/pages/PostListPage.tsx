@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Post } from "../types/post";
+import styles from "./PostListPage.module.css";
 
 const STATUS_LABEL: Record<Post["status"], string> = {
   published: "公開",
@@ -67,20 +68,20 @@ export function PostListPage() {
 
   return (
     <>
-      <header className="page-header">
+      <header className={styles.pageHeader}>
         <h1>記事一覧</h1>
-        <a className="button" href="#">
+        <a className={styles.button} href="#">
           新規作成
         </a>
       </header>
 
-      <main className="page-main">
-        <p className="status" role="status" aria-live="polite">
+      <main className={styles.pageMain}>
+        <p className={styles.status} role="status" aria-live="polite">
           {statusMessage}
         </p>
 
-        <table className="post-table">
-          <caption className="visually-hidden">
+        <table className={styles.postTable}>
+          <caption className={styles.visuallyHidden}>
             ブログ記事の一覧（タイトル・状態・更新日）
           </caption>
           <thead>
@@ -97,7 +98,7 @@ export function PostListPage() {
                   <a href={`#/posts/${post.id}`}>{post.title}</a>
                 </td>
                 <td>
-                  <span className={`badge badge--${post.status}`}>
+                  <span className={`${styles.badge} ${styles[post.status]}`}>
                     {STATUS_LABEL[post.status]}
                   </span>
                 </td>

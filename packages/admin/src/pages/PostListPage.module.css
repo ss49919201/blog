@@ -1,33 +1,4 @@
-/* 色だけ変数にまとめると、あとから一括で変えやすい */
-:root {
-  --color-text: #1a1a1a;
-  --color-muted: #5c5c5c;
-  --color-border: #d8d8d8;
-  --color-surface: #ffffff;
-  --color-page: #f4f4f5;
-  --color-accent: #2563eb;
-  --color-published: #166534;
-  --color-published-bg: #dcfce7;
-  --color-draft: #854d0e;
-  --color-draft-bg: #fef9c3;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: system-ui, sans-serif;
-  line-height: 1.5;
-  color: var(--color-text);
-  background: var(--color-page);
-}
-
-.page-header {
+.pageHeader {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -38,13 +9,13 @@ body {
   border-bottom: 1px solid var(--color-border);
 }
 
-.page-header h1 {
+.pageHeader h1 {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
 }
 
-.page-main {
+.pageMain {
   max-width: 56rem;
   margin: 0 auto;
   padding: 1.5rem;
@@ -55,37 +26,37 @@ body {
   color: var(--color-muted);
 }
 
-.post-table {
+.postTable {
   width: 100%;
   border-collapse: collapse;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
 }
 
-.post-table th,
-.post-table td {
+.postTable th,
+.postTable td {
   padding: 0.75rem 1rem;
   text-align: left;
   border-bottom: 1px solid var(--color-border);
 }
 
-.post-table th {
+.postTable th {
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-muted);
   background: #fafafa;
 }
 
-.post-table tbody tr:last-child td {
+.postTable tbody tr:last-child td {
   border-bottom: none;
 }
 
-.post-table a {
+.postTable a {
   color: var(--color-accent);
   text-decoration: none;
 }
 
-.post-table a:hover {
+.postTable a:hover {
   text-decoration: underline;
 }
 
@@ -97,12 +68,12 @@ body {
   border-radius: 9999px;
 }
 
-.badge--published {
+.published {
   color: var(--color-published);
   background: var(--color-published-bg);
 }
 
-.badge--draft {
+.draft {
   color: var(--color-draft);
   background: var(--color-draft-bg);
 }
@@ -122,7 +93,7 @@ body {
   filter: brightness(1.05);
 }
 
-.visually-hidden {
+.visuallyHidden {
   position: absolute;
   width: 1px;
   height: 1px;
