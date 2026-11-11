@@ -173,11 +173,11 @@ function compileTimeSave(post: Post, content: PostContent): void {
   const saveFromLoadedPost = () => savePost(post, content);
   void saveFromLoadedPost;
 
-  // @ts-expect-error savePost needs a parsed Post, not a hand-built { id, version }
+  // @ts-expect-error
   const saveFromLiteral = () => savePost({ id: "hello-world", version: 1 }, content);
   void saveFromLiteral;
 
-  // @ts-expect-error content cannot carry an id; only parsed PostContent is accepted
+  // @ts-expect-error
   const saveWithRawContent = () => savePost(post, { ...post.content, id: "other" });
   void saveWithRawContent;
 }

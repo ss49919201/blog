@@ -145,19 +145,19 @@ function compileTimeGuarantees(id: PostId, lock: PostVersion, content: PostConte
   };
   void commandFromParsedParts;
 
-  // @ts-expect-error a command without expectedVersion is not an UpdatePostCommand
+  // @ts-expect-error
   const commandWithoutVersion: UpdatePostCommand = { id, content };
   void commandWithoutVersion;
 
-  // @ts-expect-error a bare number is not a PostVersion
+  // @ts-expect-error
   const commandWithGuessedVersion: UpdatePostCommand = { id, expectedVersion: 1, content };
   void commandWithGuessedVersion;
 
-  // @ts-expect-error a wire body without version does not satisfy UpdatePostBody
+  // @ts-expect-error
   const bodyWithoutVersion: UpdatePostBody = { content };
   void bodyWithoutVersion;
 
-  // @ts-expect-error a content column map that misses a field fails the build
+  // @ts-expect-error
   const incompleteColumnMap = { title: "title", body: "body", status: "status" } satisfies Record<PostField, string>;
   void incompleteColumnMap;
 }
