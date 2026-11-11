@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { fetchPosts } from "../api/posts";
 import { POST_STATUS_LABEL, type Post } from "../types/post";
 import styles from "./PostListPage.module.css";
 
@@ -26,21 +27,15 @@ export function PostListPage() {
     let cancelled = false;
 
     async function loadPosts() {
-      try {
-        const response = await fetch("/data/posts.json");
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-        const posts = (await response.json()) as Post[];
-        if (!cancelled) {
-          setLoadState({ kind: "ready", posts });
-        }
-      } catch (error) {
-        console.error(error);
-        if (!cancelled) {
+      const result = await fetchPosts();
+      if (cancelled) return;
+      result.match(
+        (posts) => setLoadState({ kind: "ready", posts }),
+        (error) => {
+          console.error(error.cause);
           setLoadState({ kind: "error" });
-        }
-      }
+        },
+      );
     }
 
     loadPosts();
