@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pnpm --filter admin build",
+    "typecheck": "pnpm --filter admin typecheck",
+    "test": "pnpm --filter admin test"
   },
   "keywords": [],
   "author": "",

@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
-import type { Post } from "../types/post";
+import { POST_STATUS_LABEL, type Post } from "../types/post";
 import styles from "./PostListPage.module.css";
-
-const STATUS_LABEL: Record<Post["status"], string> = {
-  published: "公開",
-  draft: "下書き",
-};
 
 function formatDate(isoDate: string): string {
   const date = new Date(isoDate);
@@ -95,14 +90,14 @@ export function PostListPage() {
             {posts.map((post) => (
               <tr key={post.id}>
                 <td>
-                  <a href={`#/posts/${post.id}`}>{post.title}</a>
+                  <a href={`#/posts/${post.id}`}>{post.content.title}</a>
                 </td>
                 <td>
-                  <span className={`${styles.badge} ${styles[post.status]}`}>
-                    {STATUS_LABEL[post.status]}
+                  <span className={`${styles.badge} ${styles[post.content.status]}`}>
+                    {POST_STATUS_LABEL[post.content.status]}
                   </span>
                 </td>
-                <td>{formatDate(post.updatedAt)}</td>
+                <td>{formatDate(post.content.updatedAt)}</td>
               </tr>
             ))}
           </tbody>
