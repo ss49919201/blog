@@ -11,6 +11,8 @@
   --color-published-bg: #dcfce7;
   --color-draft: #854d0e;
   --color-draft-bg: #fef9c3;
+  --color-danger: #991b1b;
+  --color-danger-bg: #fee2e2;
 }
 
 *,

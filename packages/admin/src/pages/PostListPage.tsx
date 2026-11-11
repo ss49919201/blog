@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
-import type { Post } from "../types/post";
+import { fetchPosts } from "../api/posts";
+import { POST_STATUS_LABEL, type Post } from "../types/post";
 import styles from "./PostListPage.module.css";
-
-const STATUS_LABEL: Record<Post["status"], string> = {
-  published: "公開",
-  draft: "下書き",
-};
 
 function formatDate(isoDate: string): string {
   const date = new Date(isoDate);
@@ -31,21 +27,15 @@ export function PostListPage() {
     let cancelled = false;
 
     async function loadPosts() {
-      try {
-        const response = await fetch("/data/posts.json");
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-        const posts = (await response.json()) as Post[];
-        if (!cancelled) {
-          setLoadState({ kind: "ready", posts });
-        }
-      } catch (error) {
-        console.error(error);
-        if (!cancelled) {
+      const result = await fetchPosts();
+      if (cancelled) return;
+      result.match(
+        (posts) => setLoadState({ kind: "ready", posts }),
+        (error) => {
+          console.error(error.cause);
           setLoadState({ kind: "error" });
-        }
-      }
+        },
+      );
     }
 
     loadPosts();
@@ -95,14 +85,14 @@ export function PostListPage() {
             {posts.map((post) => (
               <tr key={post.id}>
                 <td>
-                  <a href={`#/posts/${post.id}`}>{post.title}</a>
+                  <a href={`#/posts/${post.id}`}>{post.content.title}</a>
                 </td>
                 <td>
-                  <span className={`${styles.badge} ${styles[post.status]}`}>
-                    {STATUS_LABEL[post.status]}
+                  <span className={`${styles.badge} ${styles[post.content.status]}`}>
+                    {POST_STATUS_LABEL[post.content.status]}
                   </span>
                 </td>
-                <td>{formatDate(post.updatedAt)}</td>
+                <td>{formatDate(post.content.updatedAt)}</td>
               </tr>
             ))}
           </tbody>
