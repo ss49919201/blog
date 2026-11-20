@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/ss49919201/blog/internal/model"
 )
 
 const (
@@ -14,8 +16,7 @@ const (
 )
 
 func main() {
-	jst := time.FixedZone("JST", 9*60*60)
-	path := filepath.Join(postsDir, time.Now().In(jst).Format("20060102150405")+".md")
+	path := filepath.Join(postsDir, model.NewPostID(time.Now()).String()+".md")
 
 	if err := os.MkdirAll(postsDir, 0o755); err != nil {
 		fmt.Fprintln(os.Stderr, err)

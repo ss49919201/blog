@@ -1,6 +1,6 @@
 // posts/*.md を読み、D1 向けの upsert SQL を標準出力に書き出す。
 //
-//	id    = ファイル名（拡張子なし、yyyymmddhhmmss）
+//	id    = ファイル名（拡張子なし）。model.PostID の体系に合わなければエラー
 //	title = 最初の "# " 見出し（無ければ id）
 //	body  = Markdown 全文
 package main
@@ -12,6 +12,8 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+
+	"github.com/ss49919201/blog/internal/model"
 )
 
 const postsDir = "posts"
@@ -34,12 +36,16 @@ func main() {
 			os.Exit(1)
 		}
 		body := string(b)
-		id := strings.TrimSuffix(filepath.Base(f), ".md")
+		id, err := model.ParsePostID(strings.TrimSuffix(filepath.Base(f), ".md"))
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "%s: %v\n", f, err)
+			os.Exit(1)
+		}
 
 		fmt.Fprintf(w,
 			"INSERT INTO posts (id, title, body) VALUES (%s, %s, %s) "+
 				"ON CONFLICT(id) DO UPDATE SET title = excluded.title, body = excluded.body;\n",
-			quote(id), quote(title(body, id)), quote(body))
+			quote(id.String()), quote(title(body, id.String())), quote(body))
 	}
 }
 
