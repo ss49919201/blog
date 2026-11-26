@@ -1,5 +1,7 @@
 import { UUID } from "crypto";
 import { Hono } from "hono";
+import { raw } from "hono/html";
+import { styles } from "./style";
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
@@ -25,24 +27,46 @@ const entries: Entry[] = [
   },
 ];
 
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit" });
+
 const Layout = (props: { title: string; children?: unknown }) => (
   <html lang="ja">
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>{props.title}</title>
+      <style>{raw(styles)}</style>
     </head>
-    <body>{props.children}</body>
+    <body>
+      <div class="shell">
+        <header class="welcome">
+          <a href="/">
+            <span class="spark" aria-hidden="true">✻</span>
+            Blog
+          </a>
+          <p>Cloudflare Workers + Hono で動いています</p>
+        </header>
+        <main>{props.children}</main>
+      </div>
+      <footer>
+        <span>~/blog</span>
+        <span>{entries.length} entries</span>
+      </footer>
+    </body>
   </html>
 );
 
 const EntryList = ({ entries }: { entries: Entry[] }) => (
   <Layout title="Blog">
-    <h1>Blog</h1>
-    <ul>
+    <h2 class="section-label">// recent entries</h2>
+    <ul class="entries">
       {entries.map((entry) => (
         <li>
-          <a href={`/${entry.id}`}>{entry.title}</a>
+          <a href={`/${entry.id}`}>
+            <time datetime={entry.publishedAt.toISOString()}>{formatDate(entry.publishedAt)}</time>
+            <span class="title">{entry.title}</span>
+          </a>
         </li>
       ))}
     </ul>
@@ -51,10 +75,18 @@ const EntryList = ({ entries }: { entries: Entry[] }) => (
 
 const EntryDetail = ({ entry }: { entry: Entry }) => (
   <Layout title={entry.title}>
-    <h1>{entry.title}</h1>
-    <p>{entry.publishedAt.toLocaleDateString("ja-JP")}</p>
-    <p>{entry.body}</p>
-    <a href="/">一覧に戻る</a>
+    <article>
+      <header>
+        <h1>{entry.title}</h1>
+        <time datetime={entry.publishedAt.toISOString()}>{formatDate(entry.publishedAt)}</time>
+      </header>
+      <div class="body">
+        <p>{entry.body}</p>
+      </div>
+    </article>
+    <p>
+      <a class="back" href="/">← 一覧に戻る</a>
+    </p>
   </Layout>
 );
 
