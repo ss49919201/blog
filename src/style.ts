@@ -44,9 +44,7 @@ a { color: inherit; text-decoration: none; }
   border-radius: 8px;
   padding: 16px 20px;
 }
-.welcome a { display: flex; align-items: center; gap: 10px; font-weight: 600; }
-.spark { color: var(--accent); font-size: 1.2em; }
-.welcome p { margin: 4px 0 0; color: var(--dim); font-size: 13px; }
+.welcome a { font-weight: 600; }
 
 /* 記事一覧：プロンプト行のように並べる */
 .entries { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
@@ -66,7 +64,6 @@ a { color: inherit; text-decoration: none; }
 .entries time { color: var(--dim); }
 .entries .title::before { content: "> "; color: var(--accent); }
 
-.section-label { color: var(--dim); font-size: 13px; margin: 0 0 8px; }
 
 /* 記事詳細 */
 article header h1 {

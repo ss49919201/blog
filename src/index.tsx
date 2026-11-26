@@ -41,11 +41,7 @@ const Layout = (props: { title: string; children?: unknown }) => (
     <body>
       <div class="shell">
         <header class="welcome">
-          <a href="/">
-            <span class="spark" aria-hidden="true">✻</span>
-            Blog
-          </a>
-          <p>Cloudflare Workers + Hono で動いています</p>
+          <a href="/">Blog</a>
         </header>
         <main>{props.children}</main>
       </div>
@@ -59,7 +55,6 @@ const Layout = (props: { title: string; children?: unknown }) => (
 
 const EntryList = ({ entries }: { entries: Entry[] }) => (
   <Layout title="Blog">
-    <h2 class="section-label">// recent entries</h2>
     <ul class="entries">
       {entries.map((entry) => (
         <li>
