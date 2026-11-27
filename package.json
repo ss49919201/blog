@@ -1,16 +1,19 @@
 {
 	"name": "blog",
+	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "wrangler dev",
-		"deploy": "wrangler deploy --minify",
-		"cf-typegen": "wrangler types --env-interface CloudflareBindings"
-	},
-	"dependencies": {
-		"hono": "^4.13.16"
+		"dev:app": "pnpm --filter app dev",
+		"dev:admin": "pnpm --filter admin dev",
+		"db:migrate:local": "pnpm --filter admin exec wrangler d1 migrations apply blog --local --persist-to ../../.wrangler/state",
+		"db:migrate:remote": "pnpm --filter admin exec wrangler d1 migrations apply blog --remote",
+		"deploy:app": "pnpm --filter app run deploy",
+		"deploy:admin": "pnpm --filter admin run deploy",
+		"typecheck": "pnpm -r exec tsc --noEmit",
+		"cf-typegen": "pnpm -r run cf-typegen"
 	},
 	"devDependencies": {
 		"@types/node": "^26.6.6",
-		"wrangler": "^4.164.0"
+		"typescript": "^7.0.2"
 	}
 }

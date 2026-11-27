@@ -1,4 +1,3 @@
-import { UUID } from "crypto";
 import { Hono } from "hono";
 import { raw } from "hono/html";
 import { styles } from "./style";
@@ -6,31 +5,19 @@ import { styles } from "./style";
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
 interface Entry {
-  id: UUID;
+  id: string;
   title: string;
   body: string;
-  publishedAt: Date;
+  // 'YYYY-MM-DD'
+  publishedAt: string;
 }
 
-const entries: Entry[] = [
-  {
-    id: "d290f1ee-6c54-4b01-90e6-d701748f0851" as UUID,
-    title: "Hono を使ってみた",
-    body: "Hono は軽量な Web フレームワークです。",
-    publishedAt: new Date("2026-01-10"),
-  },
-  {
-    id: "e9c1a9c0-8b3f-4e7a-9c3a-1a2b3c4d5e6f" as UUID,
-    title: "Cloudflare Workers で Blog を作る",
-    body: "Cloudflare Workers と Hono でシンプルなブログを構築します。",
-    publishedAt: new Date("2026-02-15"),
-  },
-];
+const selectEntry = "SELECT id, title, body, published_at AS publishedAt FROM posts";
 
-const formatDate = (d: Date) =>
-  d.toLocaleDateString("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit" });
+// 'YYYY-MM-DD' -> 'YYYY/MM/DD'。Date を経由しないので実行環境のタイムゾーンに左右されない。
+const formatDate = (d: string) => d.replaceAll("-", "/");
 
-const Layout = (props: { title: string; children?: unknown }) => (
+const Layout = (props: { title: string; count?: number; children?: unknown }) => (
   <html lang="ja">
     <head>
       <meta charset="UTF-8" />
@@ -47,19 +34,19 @@ const Layout = (props: { title: string; children?: unknown }) => (
       </div>
       <footer>
         <span>~/blog</span>
-        <span>{entries.length} entries</span>
+        {props.count !== undefined && <span>{props.count} entries</span>}
       </footer>
     </body>
   </html>
 );
 
 const EntryList = ({ entries }: { entries: Entry[] }) => (
-  <Layout title="Blog">
+  <Layout title="Blog" count={entries.length}>
     <ul class="entries">
       {entries.map((entry) => (
         <li>
           <a href={`/${entry.id}`}>
-            <time datetime={entry.publishedAt.toISOString()}>{formatDate(entry.publishedAt)}</time>
+            <time datetime={entry.publishedAt}>{formatDate(entry.publishedAt)}</time>
             <span class="title">{entry.title}</span>
           </a>
         </li>
@@ -73,7 +60,7 @@ const EntryDetail = ({ entry }: { entry: Entry }) => (
     <article>
       <header>
         <h1>{entry.title}</h1>
-        <time datetime={entry.publishedAt.toISOString()}>{formatDate(entry.publishedAt)}</time>
+        <time datetime={entry.publishedAt}>{formatDate(entry.publishedAt)}</time>
       </header>
       <div class="body">
         <p>{entry.body}</p>
@@ -85,12 +72,17 @@ const EntryDetail = ({ entry }: { entry: Entry }) => (
   </Layout>
 );
 
-app.get("/", (c) => {
-  return c.html(<EntryList entries={entries} />);
+app.get("/", async (c) => {
+  const { results } = await c.env.DB.prepare(
+    `${selectEntry} ORDER BY published_at DESC, id`,
+  ).all<Entry>();
+  return c.html(<EntryList entries={results} />);
 });
 
-app.get("/:id", (c) => {
-  const entry = entries.find((entry) => entry.id === c.req.param("id"));
+app.get("/:id", async (c) => {
+  const entry = await c.env.DB.prepare(`${selectEntry} WHERE id = ?`)
+    .bind(c.req.param("id"))
+    .first<Entry>();
   if (!entry) {
     return c.notFound();
   }
