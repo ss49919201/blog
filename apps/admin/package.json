@@ -1,0 +1,16 @@
+{
+	"name": "admin",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "wrangler dev --persist-to ../../.wrangler/state --port 8788 --inspector-port 9230",
+		"deploy": "wrangler deploy --minify",
+		"cf-typegen": "wrangler types --env-interface CloudflareBindings"
+	},
+	"dependencies": {
+		"hono": "^4.13.16"
+	},
+	"devDependencies": {
+		"wrangler": "^4.164.0"
+	}
+}
